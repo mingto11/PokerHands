@@ -18,36 +18,60 @@ public class Game {
     }
 
     public String findWinner() {
-        String result = determinePair();
-        if (result.equals(GameConstant.Result.DRAW)) {
-            result = determineHighestCards();
+        int result = determineByStraight();
+
+        if (result == 0) {
+            result = determineByThreeOfAKind();
         }
-        return result;
+
+        if (result == 0) {
+            result = determineByPairs();
+        }
+
+        if(result == 0){
+            result = determineByHighestCards();
+        }
+
+        return determineWinnter(result);
     }
 
-    private String determinePair() {
+    private String determineWinnter(int result) {
+        if(result == 0)
+            return GameConstant.Result.DRAW;
+        return result > 0 ? GameConstant.Result.PLAYER_ONE_WIN : GameConstant.Result.PLAYER_TWO_WIN;
+    }
+
+    private int determineByStraight() {
+        return playerOne.getStraight() - playerTwo.getStraight();
+    }
+
+    private int determineByThreeOfAKind() {
+        return playerOne.getHighestThreeOfAKind() - playerTwo.getHighestThreeOfAKind();
+    }
+
+    private int determineByPairs() {
         for (int i = 1; i <= (numberOfCards / 2); i++) {
             int playerOnePair = playerOne.getHighestPair(i);
             int playerTwoPair = playerTwo.getHighestPair(i);
             if (playerOnePair > playerTwoPair) {
-                return GameConstant.Result.PLAYER_ONE_WIN;
+                return 1;
             }
             if (playerOnePair < playerTwoPair) {
-                return GameConstant.Result.PLAYER_TWO_WIN;
+                return -1;
             }
         }
-        return GameConstant.Result.DRAW;
+        return 0;
     }
 
-    private String determineHighestCards() {
+    private int determineByHighestCards() {
         for (int i = 1; i <= numberOfCards; i++) {
             if (playerOne.getHighestCard(i) > playerTwo.getHighestCard(i)) {
-                return GameConstant.Result.PLAYER_ONE_WIN;
+                return 1;
             }
             if (playerOne.getHighestCard(i) < playerTwo.getHighestCard(i)) {
-                return GameConstant.Result.PLAYER_TWO_WIN;
+                return -1;
             }
         }
-        return GameConstant.Result.DRAW;
+        return 0;
     }
 }

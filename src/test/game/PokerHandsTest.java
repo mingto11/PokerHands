@@ -36,7 +36,7 @@ public class PokerHandsTest {
         assertEquals(GameConstant.Result.PLAYER_TWO_WIN, game.findWinner());
 
         playerOne = new Player("5D", "2D", "AD", "4D", "7D");
-        playerTwo = new Player("6D", "7D", "8D", "9D", "10D");
+        playerTwo = new Player("6D", "7D", "8D", "9D", "JD");
         game = new Game(playerOne, playerTwo);
 
         assertEquals(GameConstant.Result.PLAYER_ONE_WIN, game.findWinner());
@@ -128,4 +128,51 @@ public class PokerHandsTest {
         assertEquals(GameConstant.Result.PLAYER_TWO_WIN, game.findWinner());
     }
 
+    @Test
+    public void testThreeOfAKind_TwoThreeofAKindCase_GivenEachPlayersHasThreeOfAKind(){
+        Player playerOne = new Player("6D", "6S", "KD", "6H", "AC");
+        Player playerTwo = new Player("9H", "9S", "10S", "10C", "9S");
+        Game game = new Game(playerOne, playerTwo);
+
+        assertEquals(GameConstant.Result.PLAYER_TWO_WIN, game.findWinner());
+    }
+
+    @Test
+    public void testThreeOfAKind_ThreeOfAKindCase_GivenOnePlayersHaveThreeOfAkindAnotherHasTwoPair(){
+        Player playerOne = new Player("6D", "6S", "KD", "6H", "AC");
+        Player playerTwo = new Player("9H", "9S", "10S", "10C", "2S");
+        Game game = new Game(playerOne, playerTwo);
+
+        assertEquals(GameConstant.Result.PLAYER_ONE_WIN, game.findWinner());
+    }
+
+    @Test
+    public void testStraight_OneStraightCase_GivenOnePlayerHasStraight(){
+        Player playerOne = new Player("2D", "3S", "4D", "5H", "6C");
+        Player playerTwo = new Player("9H", "9S", "10S", "10C", "2S");
+        Game game = new Game(playerOne, playerTwo);
+
+        assertEquals(GameConstant.Result.PLAYER_ONE_WIN, game.findWinner());
+
+        playerOne = new Player("2D", "3S", "4D", "5H", "6C");
+        playerTwo = new Player("9H", "9S", "10S", "10C", "10D");
+        game = new Game(playerOne, playerTwo);
+
+        assertEquals(GameConstant.Result.PLAYER_ONE_WIN, game.findWinner());
+    }
+
+    @Test
+    public void testStraight_TwoStraightCase_GivenEachPlayersHaveStraight(){
+        Player playerOne = new Player("2D", "4S", "3D", "5H", "6C");
+        Player playerTwo = new Player("9H", "8S", "7S", "5C", "6S");
+        Game game = new Game(playerOne, playerTwo);
+
+        assertEquals(GameConstant.Result.PLAYER_TWO_WIN, game.findWinner());
+
+        playerOne = new Player("2D", "3S", "4D", "5H", "6C");
+        playerTwo = new Player("AH", "QS", "10S", "JC", "KD");
+        game = new Game(playerOne, playerTwo);
+
+        assertEquals(GameConstant.Result.PLAYER_TWO_WIN, game.findWinner());
+    }
 }

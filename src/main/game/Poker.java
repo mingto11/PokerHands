@@ -32,4 +32,9 @@ public class Poker implements Comparable<Poker> {
         return this.value - anotherCard.getValue();
     }
 
+    @Override
+    public boolean equals(Object anotherCard){
+       Poker card = (Poker) anotherCard;
+       return this.value == card.getValue();
+    }
 }
